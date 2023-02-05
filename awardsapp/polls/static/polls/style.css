@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Arima:wght@200;400;700&display=swap');
+
+body {
+  align-items: center;
+  background: -webkit-linear-gradient(to right, #182848, #4b6cb7);
+  background: #4b6cb7;
+  background: linear-gradient(to right, #182848, #4b6cb7);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Arima', cursive;
+  height: 100vh;
+}
+
+.footer {
+  display: flex;
+  flex-direction: row;
+  height: 20vh;
+  justify-content: space-evenly;
+  width: 100vw;
+}
+
+.footer a {
+  color: white;
+  font-weight: 200;
+  text-decoration: none;
+}
