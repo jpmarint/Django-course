@@ -4,7 +4,7 @@ from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
 
-from .models import Question
+from .models import Choice, Question
 
 class QuestionModelTests(TestCase):
     
@@ -132,3 +132,33 @@ class QuestionDetailViewTests(TestCase):
         url = reverse("polls:detail", args=(pastQuestion.id,))
         response = self.client.get(url)
         self.assertContains(response, pastQuestion.question_text)
+        
+
+def create_choice(choice_text, votes, question_id):
+    """
+    Creates a choice with 'choice_text' as the title and 'votes'(integer) as the amount of votes for this choice. The question_id(FK) must exist already.
+    """
+    return Choice.objects.create(choice_text=choice_text, votes=votes, question_id=question_id)
+
+class ResultsViewTests(TestCase):
+    def test_result_view_is_not_empty(self):
+        """
+        The results view must return a list of choices with the quantity of results.
+        """
+        past_question = create_question(
+            questionText='Past question', days=-30)
+
+        choice1 = create_choice(choice_text='Choice 1',
+                                votes=3, question_id=past_question.id)
+
+        choice2 = create_choice(choice_text='Choice 2',
+                                votes=5, question_id=past_question.id)
+
+        choices = [choice1, choice2]
+
+        url = reverse('polls:results', args=(past_question.id,))
+        response = self.client.get(url)
+
+        self.assertContains(response, past_question)
+        self.assertEqual(past_question.id,
+                         choices[0].question_id, choices[1].question_id)
